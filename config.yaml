@@ -1,0 +1,27 @@
+# AWS Config
+region_name: "eu-central-1"     # Region name
+table_name: "open-food-facts"   # DynamoDB table name
+table_partition_key: "code"     # DynamoDB table partition key
+bucket_name: "open-food-facts"  # S3 bucket name
+
+# Files needed for product recognition. 
+# Will be downloaded from the S3 bucket upon server startup.
+s3_files: ["idx_to_ean_map.pickle","search_index.ann"] 
+
+# Model Config
+# Latest model weights. Will be downloaded upon server startup.
+model_url: "https://tfhub.dev/tensorflow/resnet_50/feature_vector/1?tf-hub-format=compressed"
+model_save_dir: "models/latest" # path where the model weights will be saved.
+input_width: 224
+input_height: 224
+input_channels: 3
+batch_size: 8 #The number of images to process in a batch.
+
+# Vector Search Config
+embedding_size: 2048 # size of the embedding vectors (num of features) which is calculated by the TFX model
+metric: "angular"    # type of distance metric which was used when creating the search index
+k: 10                # number of best matches to return
+
+# Server Config
+thread_count: 5 #The number of threads used to download and process image content.
+timeout: 30     #The timeout to use when downloading images/files.
